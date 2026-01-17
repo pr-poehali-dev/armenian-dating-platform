@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
+import { PricingSection } from '@/components/PricingSection';
 
 interface Profile {
   id: number;
@@ -70,13 +71,24 @@ const mockEvents = [
 const Index = () => {
   const [activeTab, setActiveTab] = useState('profiles');
   const [likedProfiles, setLikedProfiles] = useState<number[]>([]);
+  const [isPremium, setIsPremium] = useState(false);
+  const [dailyLikesLeft, setDailyLikesLeft] = useState(5);
 
   const handleLike = (profileId: number) => {
+    if (!isPremium && dailyLikesLeft <= 0) {
+      alert('Лимит лайков исчерпан! Оформите Премиум для безлимитных лайков.');
+      return;
+    }
+    
     setLikedProfiles(prev => 
       prev.includes(profileId) 
         ? prev.filter(id => id !== profileId)
         : [...prev, profileId]
     );
+    
+    if (!isPremium && !likedProfiles.includes(profileId)) {
+      setDailyLikesLeft(prev => prev - 1);
+    }
   };
 
   return (
@@ -91,6 +103,22 @@ const Index = () => {
               <h1 className="text-2xl font-bold">Армянские Сердца</h1>
             </div>
             <div className="flex items-center gap-4">
+              {!isPremium && (
+                <Button 
+                  variant="secondary" 
+                  className="bg-white text-purple-600 hover:bg-white/90 font-semibold"
+                  onClick={() => setActiveTab('premium')}
+                >
+                  <Icon name="Star" size={18} className="mr-2" />
+                  Premium
+                </Button>
+              )}
+              {isPremium && (
+                <Badge className="bg-yellow-500 text-white px-3 py-1">
+                  <Icon name="Crown" size={16} className="mr-1" />
+                  Premium
+                </Badge>
+              )}
               <Button variant="ghost" className="text-white hover:bg-white/20">
                 <Icon name="Bell" size={20} />
               </Button>
@@ -105,7 +133,7 @@ const Index = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7 bg-white/80 backdrop-blur-sm shadow-lg">
+          <TabsList className="grid w-full grid-cols-8 bg-white/80 backdrop-blur-sm shadow-lg">
             <TabsTrigger value="profiles" className="flex items-center gap-2">
               <Icon name="Users" size={16} />
               <span className="hidden sm:inline">Поиск</span>
@@ -126,6 +154,10 @@ const Index = () => {
               <Icon name="Users2" size={16} />
               <span className="hidden sm:inline">Лента</span>
             </TabsTrigger>
+            <TabsTrigger value="premium" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white">
+              <Icon name="Star" size={16} />
+              <span className="hidden sm:inline">Premium</span>
+            </TabsTrigger>
             <TabsTrigger value="profile" className="flex items-center gap-2">
               <Icon name="User" size={16} />
               <span className="hidden sm:inline">Профиль</span>
@@ -137,9 +169,37 @@ const Index = () => {
           </TabsList>
 
           <TabsContent value="profiles" className="space-y-6 animate-fade-in">
+            {!isPremium && (
+              <Card className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300">
+                <CardContent className="p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Icon name="Heart" className="text-red-500 fill-current" size={24} />
+                    <div>
+                      <p className="font-semibold">Осталось лайков сегодня: {dailyLikesLeft}/5</p>
+                      <p className="text-sm text-gray-600">Премиум = безлимитные лайки</p>
+                    </div>
+                  </div>
+                  <Button className="bg-gradient-primary" onClick={() => setActiveTab('premium')}>
+                    Оформить Premium
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
             <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold mb-4">🔍 Поиск по параметрам</h2>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold">🔍 Поиск по параметрам</h2>
+                  {!isPremium && (
+                    <Badge className="bg-gray-500">Базовый поиск</Badge>
+                  )}
+                  {isPremium && (
+                    <Badge className="bg-gradient-primary text-white">
+                      <Icon name="Star" size={14} className="mr-1" />
+                      Расширенный поиск
+                    </Badge>
+                  )}
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="text-sm font-medium mb-2 block">Возраст</label>
@@ -154,9 +214,14 @@ const Index = () => {
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-2 block">Интересы</label>
-                    <Input placeholder="Культура, спорт..." />
+                    <Input placeholder="Культура, спорт..." disabled={!isPremium} />
                   </div>
                 </div>
+                {!isPremium && (
+                  <p className="text-sm text-gray-500 mt-3 text-center">
+                    🔒 Расширенный поиск по интересам, образованию и традициям доступен в Premium
+                  </p>
+                )}
               </CardContent>
             </Card>
 
@@ -467,19 +532,38 @@ const Index = () => {
 
                   <div>
                     <h3 className="text-lg font-semibold mb-3">Премиум функции</h3>
-                    <Card className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-bold text-lg">Премиум подписка</p>
-                            <p className="text-sm text-gray-700">Расширенный поиск, безлимитные лайки, приоритет в показах</p>
+                    {!isPremium ? (
+                      <Card className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-bold text-lg">Премиум подписка</p>
+                              <p className="text-sm text-gray-700">Расширенный поиск, безлимитные лайки, приоритет в показах</p>
+                            </div>
+                            <Button className="bg-gradient-primary" onClick={() => setActiveTab('premium')}>
+                              Подключить
+                            </Button>
                           </div>
-                          <Button className="bg-gradient-primary">
-                            Подключить
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    ) : (
+                      <Card className="bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-400">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <Icon name="Crown" className="text-yellow-600" size={32} />
+                              <div>
+                                <p className="font-bold text-lg">Premium активен</p>
+                                <p className="text-sm text-gray-700">Действует до 17 февраля 2026</p>
+                              </div>
+                            </div>
+                            <Button variant="outline" onClick={() => setIsPremium(false)}>
+                              Отменить (демо)
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
                   </div>
 
                   <div>
@@ -499,6 +583,32 @@ const Index = () => {
                       </div>
                     </div>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="premium" className="animate-fade-in">
+            <PricingSection />
+            
+            <Card className="bg-white/90 backdrop-blur-sm shadow-lg mt-8">
+              <CardContent className="p-8">
+                <h3 className="text-2xl font-bold mb-6 text-center">Попробуйте Premium прямо сейчас!</h3>
+                <div className="max-w-md mx-auto space-y-4">
+                  <Button 
+                    className="w-full h-14 text-lg bg-gradient-primary hover:opacity-90"
+                    onClick={() => {
+                      setIsPremium(true);
+                      setActiveTab('profiles');
+                      alert('Добро пожаловать в Premium! Теперь у вас безлимитные лайки и расширенный поиск.');
+                    }}
+                  >
+                    <Icon name="Star" size={20} className="mr-2" />
+                    Активировать Premium (демо)
+                  </Button>
+                  <p className="text-center text-sm text-gray-500">
+                    Это демо-версия. В реальном приложении здесь будет платёжная форма.
+                  </p>
                 </div>
               </CardContent>
             </Card>
