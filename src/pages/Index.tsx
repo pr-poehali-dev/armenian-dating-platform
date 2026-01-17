@@ -93,7 +93,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-blue-50 to-orange-50">
       <div className="bg-gradient-primary text-white">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
@@ -107,7 +107,7 @@ const Index = () => {
               {!isPremium && (
                 <Button 
                   variant="secondary" 
-                  className="bg-white text-purple-600 hover:bg-white/90 font-semibold"
+                  className="bg-white text-red-600 hover:bg-white/90 font-semibold"
                   onClick={() => setActiveTab('premium')}
                 >
                   <Icon name="Star" size={18} className="mr-2" />
@@ -155,7 +155,7 @@ const Index = () => {
               <Icon name="Users2" size={16} />
               <span className="hidden sm:inline">Лента</span>
             </TabsTrigger>
-            <TabsTrigger value="premium" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:text-white">
+            <TabsTrigger value="premium" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-orange-500 data-[state=active]:text-white">
               <Icon name="Star" size={16} />
               <span className="hidden sm:inline">Premium</span>
             </TabsTrigger>
@@ -171,7 +171,7 @@ const Index = () => {
 
           <TabsContent value="profiles" className="space-y-6 animate-fade-in">
             {!isPremium && (
-              <Card className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300">
+              <Card className="bg-gradient-to-r from-red-100 to-orange-100 border-2 border-red-300">
                 <CardContent className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Icon name="Heart" className="text-red-500 fill-current" size={24} />
@@ -538,7 +538,7 @@ const Index = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-3">Премиум функции</h3>
                     {!isPremium ? (
-                      <Card className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300">
+                      <Card className="bg-gradient-to-r from-red-100 to-orange-100 border-2 border-red-300">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>

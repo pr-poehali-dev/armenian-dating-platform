@@ -19,10 +19,10 @@ export default {
 		},
 		extend: {
 			backgroundImage: {
-				'gradient-primary': 'linear-gradient(135deg, #9b87f5 0%, #D946EF 100%)',
-				'gradient-secondary': 'linear-gradient(135deg, #F97316 0%, #FEF7CD 100%)',
-				'gradient-accent': 'linear-gradient(135deg, #0EA5E9 0%, #8B5CF6 100%)',
-				'gradient-card': 'linear-gradient(135deg, rgba(155, 135, 245, 0.1) 0%, rgba(217, 70, 239, 0.1) 100%)'
+				'gradient-primary': 'linear-gradient(135deg, #D91E36 0%, #0033A0 100%)',
+				'gradient-secondary': 'linear-gradient(135deg, #F2A800 0%, #D91E36 100%)',
+				'gradient-accent': 'linear-gradient(135deg, #0033A0 0%, #F2A800 100%)',
+				'gradient-card': 'linear-gradient(135deg, rgba(217, 30, 54, 0.1) 0%, rgba(0, 51, 160, 0.1) 100%)'
 			},
 			colors: {
 				border: 'hsl(var(--border))',

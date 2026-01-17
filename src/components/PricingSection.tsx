@@ -37,7 +37,7 @@ const pricingPlans: PricingPlan[] = [
     period: 'месяц',
     popular: true,
     icon: 'Star',
-    gradient: 'from-purple-500 to-pink-500',
+    gradient: 'from-red-500 to-orange-500',
     planId: 'premium',
     features: [
       'Безлимитные лайки',
@@ -111,7 +111,7 @@ export const PricingSection = () => {
   return (
     <div className="space-y-8 py-8">
       <div className="text-center space-y-4">
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
           Выберите свой тариф
         </h2>
         <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -124,13 +124,13 @@ export const PricingSection = () => {
           <Card 
             key={plan.name}
             className={`relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${
-              plan.popular ? 'ring-4 ring-purple-500 scale-105' : ''
+              plan.popular ? 'ring-4 ring-red-500 scale-105' : ''
             } animate-scale-in bg-white`}
             style={{ animationDelay: `${index * 100}ms` }}
           >
             {plan.popular && (
               <div className="absolute top-0 right-0">
-                <Badge className="rounded-bl-lg rounded-tr-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2">
+                <Badge className="rounded-bl-lg rounded-tr-lg bg-gradient-to-r from-red-500 to-orange-500 text-white px-4 py-2">
                   Популярный
                 </Badge>
               </div>
@@ -156,7 +156,7 @@ export const PricingSection = () => {
                       name="CheckCircle" 
                       size={20} 
                       className={`flex-shrink-0 mt-0.5 ${
-                        plan.popular ? 'text-purple-500' : 'text-green-500'
+                        plan.popular ? 'text-red-500' : 'text-green-500'
                       }`}
                     />
                     <span className="text-sm text-gray-700">{feature}</span>
@@ -184,7 +184,7 @@ export const PricingSection = () => {
                     <Button 
                       className={`flex-1 h-12 text-lg font-semibold ${
                         plan.popular 
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90' 
+                          ? 'bg-gradient-to-r from-red-500 to-orange-500 hover:opacity-90' 
                           : 'bg-gradient-to-r from-orange-500 to-yellow-500 hover:opacity-90'
                       }`}
                       onClick={() => handlePayment(plan.planId!)}
@@ -206,7 +206,7 @@ export const PricingSection = () => {
                 <Button 
                   className={`w-full h-12 text-lg font-semibold ${
                     plan.popular 
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90' 
+                      ? 'bg-gradient-to-r from-red-500 to-orange-500 hover:opacity-90' 
                       : 'bg-gradient-to-r from-orange-500 to-yellow-500 hover:opacity-90'
                   }`}
                   onClick={() => setSelectedPlan(plan.planId!)}

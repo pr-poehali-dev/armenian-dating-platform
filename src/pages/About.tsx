@@ -3,7 +3,7 @@ import Icon from '@/components/ui/icon';
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-orange-50">
       <div className="bg-gradient-primary text-white">
         <div className="container mx-auto px-4 py-12 text-center">
           <h1 className="text-4xl font-bold mb-4">О проекте "Армянские Сердца"</h1>
@@ -15,7 +15,7 @@ const About = () => {
         <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
           <CardContent className="p-8">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <Icon name="Building2" size={28} className="text-purple-600" />
+              <Icon name="Building2" size={28} className="text-red-600" />
               Реквизиты организации
             </h2>
             
@@ -49,7 +49,7 @@ const About = () => {
                 <p className="font-semibold">
                   <a 
                     href={window.location.origin} 
-                    className="text-purple-600 hover:text-purple-800 underline"
+                    className="text-red-600 hover:text-red-800 underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -64,14 +64,14 @@ const About = () => {
         <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
           <CardContent className="p-8">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <Icon name="Mail" size={28} className="text-purple-600" />
+              <Icon name="Mail" size={28} className="text-red-600" />
               Контактная информация
             </h2>
             
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                  <Icon name="Phone" size={20} className="text-purple-600" />
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <Icon name="Phone" size={20} className="text-red-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Телефон поддержки</p>
@@ -80,8 +80,8 @@ const About = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                  <Icon name="Mail" size={20} className="text-purple-600" />
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <Icon name="Mail" size={20} className="text-red-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Email для связи</p>
@@ -90,8 +90,8 @@ const About = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                  <Icon name="MessageCircle" size={20} className="text-purple-600" />
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <Icon name="MessageCircle" size={20} className="text-red-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Telegram поддержка</p>
@@ -105,7 +105,7 @@ const About = () => {
         <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
           <CardContent className="p-8">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <Icon name="Shield" size={28} className="text-purple-600" />
+              <Icon name="Shield" size={28} className="text-red-600" />
               Безопасность и конфиденциальность
             </h2>
             
@@ -126,7 +126,7 @@ const About = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300">
+        <Card className="bg-gradient-to-r from-red-100 to-orange-100 border-2 border-red-300">
           <CardContent className="p-6 text-center">
             <Icon name="Heart" className="text-red-500 fill-current mx-auto mb-3" size={40} />
             <h3 className="text-xl font-bold mb-2">Мы помогаем армянам находить друг друга</h3>

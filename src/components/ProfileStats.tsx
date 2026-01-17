@@ -11,7 +11,7 @@ interface StatsCardProps {
 }
 
 const StatsCard = ({ icon, label, value, gradient, premium }: StatsCardProps) => (
-  <Card className={`relative overflow-hidden hover:shadow-lg transition-all ${premium ? 'ring-2 ring-purple-400' : ''}`}>
+  <Card className={`relative overflow-hidden hover:shadow-lg transition-all ${premium ? 'ring-2 ring-red-400' : ''}`}>
     <CardContent className="p-6">
       <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${gradient} opacity-10 rounded-full -mr-16 -mt-16`}></div>
       <div className="relative">
@@ -37,16 +37,16 @@ interface ProfileStatsProps {
 export const ProfileStats = ({ isPremium }: ProfileStatsProps) => {
   const basicStats = [
     { icon: 'Eye', label: 'Просмотров профиля', value: 142, gradient: 'from-blue-400 to-blue-600' },
-    { icon: 'Heart', label: 'Получено лайков', value: 38, gradient: 'from-red-400 to-pink-600' },
+    { icon: 'Heart', label: 'Получено лайков', value: 38, gradient: 'from-red-400 to-orange-600' },
     { icon: 'Users', label: 'Взаимных симпатий', value: 5, gradient: 'from-green-400 to-emerald-600' },
-    { icon: 'MessageCircle', label: 'Активных чатов', value: 8, gradient: 'from-purple-400 to-indigo-600' }
+    { icon: 'MessageCircle', label: 'Активных чатов', value: 8, gradient: 'from-blue-400 to-indigo-600' }
   ];
 
   const premiumStats = [
     { icon: 'TrendingUp', label: 'Рост популярности', value: '+24%', gradient: 'from-orange-400 to-red-600', premium: true },
     { icon: 'Clock', label: 'Среднее время ответа', value: '12 мин', gradient: 'from-teal-400 to-cyan-600', premium: true },
     { icon: 'Star', label: 'Рейтинг профиля', value: '4.8/5', gradient: 'from-yellow-400 to-orange-600', premium: true },
-    { icon: 'Target', label: 'Совпадений по интересам', value: 23, gradient: 'from-pink-400 to-rose-600', premium: true }
+    { icon: 'Target', label: 'Совпадений по интересам', value: 23, gradient: 'from-orange-400 to-rose-600', premium: true }
   ];
 
   return (
@@ -72,10 +72,10 @@ export const ProfileStats = ({ isPremium }: ProfileStatsProps) => {
             ))}
           </div>
 
-          <Card className="mt-6 bg-gradient-to-r from-purple-50 to-pink-50">
+          <Card className="mt-6 bg-gradient-to-r from-red-50 to-orange-50">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
                   <Icon name="Lightbulb" size={24} className="text-white" />
                 </div>
                 <div className="flex-1">
@@ -100,7 +100,7 @@ export const ProfileStats = ({ isPremium }: ProfileStatsProps) => {
           </Card>
         </div>
       ) : (
-        <Card className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300">
+        <Card className="bg-gradient-to-r from-red-100 to-orange-100 border-2 border-red-300">
           <CardContent className="p-8 text-center">
             <div className="max-w-md mx-auto">
               <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
@@ -124,7 +124,7 @@ export const ProfileStats = ({ isPremium }: ProfileStatsProps) => {
                   <p className="font-semibold">Совместимость</p>
                 </div>
                 <div className="p-3 bg-white/50 rounded-lg">
-                  <Icon name="Lightbulb" className="mx-auto mb-1 text-purple-500" size={20} />
+                  <Icon name="Lightbulb" className="mx-auto mb-1 text-red-500" size={20} />
                   <p className="font-semibold">Рекомендации</p>
                 </div>
               </div>
