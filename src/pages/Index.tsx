@@ -97,12 +97,12 @@ const Index = () => {
       <div className="bg-gradient-primary text-white">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <a href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
               <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
                 ❤️
               </div>
               <h1 className="text-2xl font-bold">Армянские Сердца</h1>
-            </div>
+            </a>
             <div className="flex items-center gap-4">
               {!isPremium && (
                 <Button 

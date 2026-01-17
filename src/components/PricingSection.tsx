@@ -262,6 +262,16 @@ export const PricingSection = () => {
             </CardContent>
           </Card>
         </div>
+
+        <div className="text-center mt-8">
+          <a 
+            href="/about" 
+            className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-800 font-medium"
+          >
+            <Icon name="FileText" size={20} />
+            Реквизиты и контакты организации
+          </a>
+        </div>
       </div>
     </div>
   );
