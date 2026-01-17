@@ -23,10 +23,23 @@ export const ProfileSettingsTabs = ({ isPremium, setIsPremium, setActiveTab }: P
     age: localStorage.getItem('userAge') || '25',
     city: localStorage.getItem('userCity') || 'Москва',
     description: localStorage.getItem('userDescription') || 'Люблю армянскую культуру, традиционные танцы и путешествия. Ищу человека для серьёзных отношений, который разделяет мои ценности.',
-    interests: JSON.parse(localStorage.getItem('userInterests') || '["Культура","Танцы","Путешествия","Кулинария","Музыка"]')
+    interests: JSON.parse(localStorage.getItem('userInterests') || '["Культура","Танцы","Путешествия","Кулинария","Музыка"]'),
+    photo: localStorage.getItem('userPhoto') || 'https://cdn.poehali.dev/projects/4a1800f8-5b7e-45bd-b17d-3e7d22e4acca/files/becc0a67-f42d-4c9d-87aa-7f3ccb4ddd96.jpg'
   });
 
   const [editFormData, setEditFormData] = useState(profileData);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setEditFormData(prev => ({...prev, photo: base64String}));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSaveProfile = () => {
     localStorage.setItem('userName', editFormData.name);
@@ -34,6 +47,7 @@ export const ProfileSettingsTabs = ({ isPremium, setIsPremium, setActiveTab }: P
     localStorage.setItem('userCity', editFormData.city);
     localStorage.setItem('userDescription', editFormData.description);
     localStorage.setItem('userInterests', JSON.stringify(editFormData.interests));
+    localStorage.setItem('userPhoto', editFormData.photo);
     
     setProfileData(editFormData);
     setIsEditing(false);
@@ -61,10 +75,23 @@ export const ProfileSettingsTabs = ({ isPremium, setIsPremium, setActiveTab }: P
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-1 bg-white/90 backdrop-blur-sm shadow-lg">
             <CardContent className="p-6 text-center">
-              <Avatar className="w-32 h-32 mx-auto mb-4">
-                <AvatarImage src="https://cdn.poehali.dev/projects/4a1800f8-5b7e-45bd-b17d-3e7d22e4acca/files/becc0a67-f42d-4c9d-87aa-7f3ccb4ddd96.jpg" />
-                <AvatarFallback>A</AvatarFallback>
-              </Avatar>
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <Avatar className="w-32 h-32">
+                  <AvatarImage src={isEditing ? editFormData.photo : profileData.photo} />
+                  <AvatarFallback>{profileData.name[0]}</AvatarFallback>
+                </Avatar>
+                {isEditing && (
+                  <label className="absolute bottom-0 right-0 w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
+                    <Icon name="Camera" size={20} className="text-white" />
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      onChange={handlePhotoChange}
+                    />
+                  </label>
+                )}
+              </div>
               <h3 className="text-2xl font-bold mb-1">{profileData.name}, {profileData.age}</h3>
               <p className="text-gray-600 mb-4">{profileData.city}</p>
               <Badge className="bg-blue-500 text-white mb-4">

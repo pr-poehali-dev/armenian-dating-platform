@@ -52,12 +52,12 @@ const About = () => {
                 <p className="text-sm font-medium text-gray-500 mb-1">Адрес сайта</p>
                 <p className="font-semibold">
                   <a 
-                    href={window.location.origin} 
+                    href="https://армянскиесердца.рф" 
                     className="text-red-600 hover:text-red-800 underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {window.location.origin}
+                    АрмянскиеСердца.рф
                   </a>
                 </p>
               </div>
