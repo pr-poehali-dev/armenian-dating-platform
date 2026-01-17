@@ -103,6 +103,10 @@ const Index = () => {
     }
   };
 
+  const handleMessageClick = (profile: Profile) => {
+    setActiveTab('messages');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-blue-50 to-orange-50">
       <HeaderSection 
@@ -155,6 +159,7 @@ const Index = () => {
               likedProfiles={likedProfiles}
               onPremiumClick={() => setActiveTab('premium')}
               onLike={handleLike}
+              onMessageClick={handleMessageClick}
             />
           </TabsContent>
 

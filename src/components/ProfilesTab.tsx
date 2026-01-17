@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,7 @@ interface ProfilesTabProps {
   likedProfiles: number[];
   onPremiumClick: () => void;
   onLike: (profileId: number) => void;
+  onMessageClick: (profile: Profile) => void;
 }
 
 export const ProfilesTab = ({ 
@@ -30,8 +32,23 @@ export const ProfilesTab = ({
   dailyLikesLeft, 
   likedProfiles, 
   onPremiumClick, 
-  onLike 
+  onLike,
+  onMessageClick
 }: ProfilesTabProps) => {
+  const [ageFrom, setAgeFrom] = useState('');
+  const [ageTo, setAgeTo] = useState('');
+  const [cityFilter, setCityFilter] = useState('');
+  const [interestFilter, setInterestFilter] = useState('');
+
+  const filteredProfiles = mockProfiles.filter(profile => {
+    const ageMatch = (!ageFrom || profile.age >= parseInt(ageFrom)) && 
+                     (!ageTo || profile.age <= parseInt(ageTo));
+    const cityMatch = !cityFilter || profile.city.toLowerCase().includes(cityFilter.toLowerCase());
+    const interestMatch = !interestFilter || 
+                         profile.interests.some(i => i.toLowerCase().includes(interestFilter.toLowerCase()));
+    return ageMatch && cityMatch && (isPremium ? interestMatch : true);
+  });
+
   return (
     <div className="space-y-6 animate-fade-in">
       {!isPremium && (
@@ -69,17 +86,36 @@ export const ProfilesTab = ({
             <div>
               <label className="text-sm font-medium mb-2 block">Возраст</label>
               <div className="flex gap-2">
-                <Input placeholder="От" type="number" />
-                <Input placeholder="До" type="number" />
+                <Input 
+                  placeholder="От" 
+                  type="number" 
+                  value={ageFrom}
+                  onChange={(e) => setAgeFrom(e.target.value)}
+                />
+                <Input 
+                  placeholder="До" 
+                  type="number"
+                  value={ageTo}
+                  onChange={(e) => setAgeTo(e.target.value)}
+                />
               </div>
             </div>
             <div>
               <label className="text-sm font-medium mb-2 block">Город</label>
-              <Input placeholder="Выберите город" />
+              <Input 
+                placeholder="Москва, Санкт-Петербург..."
+                value={cityFilter}
+                onChange={(e) => setCityFilter(e.target.value)}
+              />
             </div>
             <div>
               <label className="text-sm font-medium mb-2 block">Интересы</label>
-              <Input placeholder="Культура, спорт..." disabled={!isPremium} />
+              <Input 
+                placeholder="Культура, спорт..." 
+                disabled={!isPremium}
+                value={interestFilter}
+                onChange={(e) => setInterestFilter(e.target.value)}
+              />
             </div>
           </div>
           {!isPremium && (
@@ -90,8 +126,18 @@ export const ProfilesTab = ({
         </CardContent>
       </Card>
 
+      {filteredProfiles.length === 0 && (
+        <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
+          <CardContent className="p-12 text-center">
+            <Icon name="Search" size={48} className="mx-auto mb-4 text-gray-400" />
+            <h3 className="text-xl font-bold mb-2">Никого не найдено</h3>
+            <p className="text-gray-600">Попробуйте изменить параметры поиска</p>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockProfiles.map((profile, index) => (
+        {filteredProfiles.map((profile, index) => (
           <Card 
             key={profile.id} 
             className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white/90 backdrop-blur-sm animate-scale-in"
@@ -145,7 +191,11 @@ export const ProfilesTab = ({
                   <Icon name={likedProfiles.includes(profile.id) ? "Heart" : "Heart"} size={18} className={likedProfiles.includes(profile.id) ? "fill-current" : ""} />
                   {likedProfiles.includes(profile.id) ? 'Нравится' : 'Лайк'}
                 </Button>
-                <Button variant="outline" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => onMessageClick(profile)}
+                >
                   <Icon name="MessageCircle" size={18} />
                   Написать
                 </Button>
