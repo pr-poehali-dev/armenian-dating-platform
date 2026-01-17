@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { TabsContent } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
@@ -14,6 +17,44 @@ interface ProfileSettingsTabsProps {
 }
 
 export const ProfileSettingsTabs = ({ isPremium, setIsPremium, setActiveTab }: ProfileSettingsTabsProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState({
+    name: localStorage.getItem('userName') || 'Ани',
+    age: localStorage.getItem('userAge') || '25',
+    city: localStorage.getItem('userCity') || 'Москва',
+    description: localStorage.getItem('userDescription') || 'Люблю армянскую культуру, традиционные танцы и путешествия. Ищу человека для серьёзных отношений, который разделяет мои ценности.',
+    interests: JSON.parse(localStorage.getItem('userInterests') || '["Культура","Танцы","Путешествия","Кулинария","Музыка"]')
+  });
+
+  const [editFormData, setEditFormData] = useState(profileData);
+
+  const handleSaveProfile = () => {
+    localStorage.setItem('userName', editFormData.name);
+    localStorage.setItem('userAge', editFormData.age);
+    localStorage.setItem('userCity', editFormData.city);
+    localStorage.setItem('userDescription', editFormData.description);
+    localStorage.setItem('userInterests', JSON.stringify(editFormData.interests));
+    
+    setProfileData(editFormData);
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditFormData(profileData);
+    setIsEditing(false);
+  };
+
+  const toggleInterest = (interest: string) => {
+    setEditFormData(prev => ({
+      ...prev,
+      interests: prev.interests.includes(interest)
+        ? prev.interests.filter(i => i !== interest)
+        : [...prev.interests, interest]
+    }));
+  };
+
+  const availableInterests = ['Культура', 'Танцы', 'Путешествия', 'Кулинария', 'Музыка', 'Спорт', 'Кино', 'Книги', 'Искусство', 'Природа'];
+
   return (
     <>
       <TabsContent value="profile" className="animate-fade-in">
@@ -24,39 +65,118 @@ export const ProfileSettingsTabs = ({ isPremium, setIsPremium, setActiveTab }: P
                 <AvatarImage src="https://cdn.poehali.dev/projects/4a1800f8-5b7e-45bd-b17d-3e7d22e4acca/files/becc0a67-f42d-4c9d-87aa-7f3ccb4ddd96.jpg" />
                 <AvatarFallback>A</AvatarFallback>
               </Avatar>
-              <h3 className="text-2xl font-bold mb-1">Ани, 25</h3>
-              <p className="text-gray-600 mb-4">Москва</p>
+              <h3 className="text-2xl font-bold mb-1">{profileData.name}, {profileData.age}</h3>
+              <p className="text-gray-600 mb-4">{profileData.city}</p>
               <Badge className="bg-blue-500 text-white mb-4">
                 <Icon name="BadgeCheck" size={14} className="mr-1" />
                 Профиль проверен
               </Badge>
-              <Button className="w-full bg-gradient-primary">
-                Редактировать профиль
-              </Button>
+              {!isEditing ? (
+                <Button className="w-full bg-gradient-primary" onClick={() => setIsEditing(true)}>
+                  <Icon name="Edit" size={16} className="mr-2" />
+                  Редактировать профиль
+                </Button>
+              ) : (
+                <div className="space-y-2">
+                  <Button className="w-full bg-green-500 hover:bg-green-600" onClick={handleSaveProfile}>
+                    <Icon name="Check" size={16} className="mr-2" />
+                    Сохранить
+                  </Button>
+                  <Button className="w-full" variant="outline" onClick={handleCancelEdit}>
+                    <Icon name="X" size={16} className="mr-2" />
+                    Отменить
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
 
           <Card className="lg:col-span-2 bg-white/90 backdrop-blur-sm shadow-lg">
             <CardContent className="p-6">
               <h3 className="text-xl font-bold mb-4">О себе</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Интересы</label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {['Культура', 'Танцы', 'Путешествия', 'Кулинария', 'Музыка'].map(interest => (
-                      <Badge key={interest} className="bg-gradient-to-r from-purple-100 to-pink-100">
-                        {interest}
-                      </Badge>
-                    ))}
+              
+              {!isEditing ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">Интересы</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profileData.interests.map(interest => (
+                        <Badge key={interest} className="bg-gradient-to-r from-red-100 to-orange-100">
+                          {interest}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">Описание</label>
+                    <p className="mt-2 text-gray-700">
+                      {profileData.description}
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Описание</label>
-                  <p className="mt-2 text-gray-700">
-                    Люблю армянскую культуру, традиционные танцы и путешествия. Ищу человека для серьёзных отношений, который разделяет мои ценности.
-                  </p>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">Имя</label>
+                    <Input 
+                      value={editFormData.name}
+                      onChange={(e) => setEditFormData(prev => ({...prev, name: e.target.value}))}
+                      className="mt-2"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Возраст</label>
+                      <Input 
+                        type="number"
+                        value={editFormData.age}
+                        onChange={(e) => setEditFormData(prev => ({...prev, age: e.target.value}))}
+                        className="mt-2"
+                        min={18}
+                        max={99}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Город</label>
+                      <Input 
+                        value={editFormData.city}
+                        onChange={(e) => setEditFormData(prev => ({...prev, city: e.target.value}))}
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">Интересы (выберите до 5)</label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {availableInterests.map(interest => (
+                        <Badge 
+                          key={interest} 
+                          className={`cursor-pointer transition-all ${
+                            editFormData.interests.includes(interest)
+                              ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white'
+                              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          }`}
+                          onClick={() => toggleInterest(interest)}
+                        >
+                          {interest}
+                          {editFormData.interests.includes(interest) && (
+                            <Icon name="Check" size={14} className="ml-1" />
+                          )}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">Описание</label>
+                    <Textarea 
+                      value={editFormData.description}
+                      onChange={(e) => setEditFormData(prev => ({...prev, description: e.target.value}))}
+                      className="mt-2 min-h-[100px]"
+                      placeholder="Расскажите о себе..."
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </div>
