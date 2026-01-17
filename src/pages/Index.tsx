@@ -73,18 +73,10 @@ const Index = () => {
   const [likedProfiles, setLikedProfiles] = useState<number[]>([]);
   const [isPremium, setIsPremium] = useState(false);
   const [dailyLikesLeft, setDailyLikesLeft] = useState(5);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   useEffect(() => {
-    // Проверяем авторизацию при загрузке
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
-    
-    // Если не авторизован, перенаправляем на страницу входа
-    if (!loggedIn) {
-      navigate('/login');
-    }
-  }, [navigate]);
+    const premiumStatus = localStorage.getItem('isPremium') === 'true';
+    setIsPremium(premiumStatus);
+  }, []);
 
   const handleLike = (profileId: number) => {
     if (!isPremium && dailyLikesLeft <= 0) {
@@ -105,6 +97,11 @@ const Index = () => {
 
   const handleMessageClick = (profile: Profile) => {
     setActiveTab('messages');
+  };
+
+  const handlePremiumActivate = (status: boolean) => {
+    setIsPremium(status);
+    localStorage.setItem('isPremium', status.toString());
   };
 
   return (
@@ -171,7 +168,7 @@ const Index = () => {
 
           <ProfileSettingsTabs 
             isPremium={isPremium}
-            setIsPremium={setIsPremium}
+            setIsPremium={handlePremiumActivate}
             setActiveTab={setActiveTab}
           />
         </Tabs>
