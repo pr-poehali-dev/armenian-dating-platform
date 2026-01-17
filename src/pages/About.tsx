@@ -21,27 +21,31 @@ const About = () => {
             
             <div className="space-y-4 text-gray-700">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div className="md:col-span-2">
                   <p className="text-sm font-medium text-gray-500 mb-1">Наименование</p>
-                  <p className="font-semibold">ООО "Армянские Сердца"</p>
+                  <p className="font-semibold">ИП Саакян Саргис Арамович</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-500 mb-1">ИНН</p>
-                  <p className="font-semibold">7707123456</p>
+                  <p className="font-semibold">463248361053</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500 mb-1">ОГРН</p>
-                  <p className="font-semibold">1234567890123</p>
+                  <p className="text-sm font-medium text-gray-500 mb-1">ОГРНИП</p>
+                  <p className="font-semibold">324460000004251</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500 mb-1">КПП</p>
-                  <p className="font-semibold">770701001</p>
+                  <p className="text-sm font-medium text-gray-500 mb-1">Дата регистрации</p>
+                  <p className="font-semibold">30.01.2024</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500 mb-1">Регион</p>
+                  <p className="font-semibold">Курская область</p>
                 </div>
               </div>
 
               <div className="pt-4 border-t">
-                <p className="text-sm font-medium text-gray-500 mb-1">Юридический адрес</p>
-                <p className="font-semibold">г. Москва, ул. Тверская, д. 1, офис 100, 125009</p>
+                <p className="text-sm font-medium text-gray-500 mb-1">Основной вид деятельности</p>
+                <p className="font-semibold">Деятельность ресторанов и услуги по доставке продуктов питания</p>
               </div>
 
               <div className="pt-4 border-t">
