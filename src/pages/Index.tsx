@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { HeaderSection } from '@/components/HeaderSection';
@@ -67,10 +68,23 @@ const mockEvents = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profiles');
   const [likedProfiles, setLikedProfiles] = useState<number[]>([]);
   const [isPremium, setIsPremium] = useState(false);
   const [dailyLikesLeft, setDailyLikesLeft] = useState(5);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Проверяем авторизацию при загрузке
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+    
+    // Если не авторизован, перенаправляем на страницу входа
+    if (!loggedIn) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const handleLike = (profileId: number) => {
     if (!isPremium && dailyLikesLeft <= 0) {

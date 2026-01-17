@@ -4,9 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,8 +24,17 @@ const Register = () => {
       alert('Пароли не совпадают');
       return;
     }
-    // Здесь будет логика регистрации
-    window.location.href = '/';
+    
+    // Сохраняем данные пользователя
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', formData.name);
+    localStorage.setItem('userEmail', formData.email);
+    localStorage.setItem('userAge', formData.age);
+    localStorage.setItem('userCity', formData.city);
+    localStorage.setItem('userGender', formData.gender);
+    
+    // Переходим в личный кабинет
+    navigate('/');
   };
 
   const handleChange = (field: string, value: string) => {

@@ -1,7 +1,16 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import Icon from '@/components/ui/icon';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderSectionProps {
   isPremium: boolean;
@@ -9,6 +18,19 @@ interface HeaderSectionProps {
 }
 
 export const HeaderSection = ({ isPremium, onPremiumClick }: HeaderSectionProps) => {
+  const navigate = useNavigate();
+  const userName = localStorage.getItem('userName') || 'Пользователь';
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userAge');
+    localStorage.removeItem('userCity');
+    localStorage.removeItem('userGender');
+    navigate('/login');
+  };
+
   return (
     <div className="bg-gradient-primary text-white">
       <div className="container mx-auto px-4 py-6">
@@ -39,12 +61,27 @@ export const HeaderSection = ({ isPremium, onPremiumClick }: HeaderSectionProps)
             <Button variant="ghost" className="text-white hover:bg-white/20">
               <Icon name="Bell" size={20} />
             </Button>
-            <a href="/login">
-              <Avatar className="cursor-pointer hover:ring-2 hover:ring-white/50 transition-all">
-                <AvatarImage src="https://cdn.poehali.dev/projects/4a1800f8-5b7e-45bd-b17d-3e7d22e4acca/files/becc0a67-f42d-4c9d-87aa-7f3ccb4ddd96.jpg" />
-                <AvatarFallback>А</AvatarFallback>
-              </Avatar>
-            </a>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer hover:ring-2 hover:ring-white/50 transition-all">
+                  <AvatarImage src="https://cdn.poehali.dev/projects/4a1800f8-5b7e-45bd-b17d-3e7d22e4acca/files/becc0a67-f42d-4c9d-87aa-7f3ccb4ddd96.jpg" />
+                  <AvatarFallback>{userName[0]}</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <div>
+                    <p className="font-semibold">{userName}</p>
+                    <p className="text-xs text-gray-500">{localStorage.getItem('userEmail')}</p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="text-red-600 cursor-pointer">
+                  <Icon name="LogOut" size={16} className="mr-2" />
+                  Выйти
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
