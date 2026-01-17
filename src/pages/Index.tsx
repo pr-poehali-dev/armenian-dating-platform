@@ -7,6 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { PricingSection } from '@/components/PricingSection';
+import { ProfileStats } from '@/components/ProfileStats';
 
 interface Profile {
   id: number;
@@ -502,6 +503,10 @@ const Index = () => {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+
+            <div className="mt-8">
+              <ProfileStats isPremium={isPremium} />
             </div>
           </TabsContent>
 

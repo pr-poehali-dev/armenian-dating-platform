@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
 
 interface PricingPlan {
   name: string;
@@ -11,6 +13,7 @@ interface PricingPlan {
   features: string[];
   icon: string;
   gradient: string;
+  planId?: string;
 }
 
 const pricingPlans: PricingPlan[] = [
@@ -35,6 +38,7 @@ const pricingPlans: PricingPlan[] = [
     popular: true,
     icon: 'Star',
     gradient: 'from-purple-500 to-pink-500',
+    planId: 'premium',
     features: [
       'Безлимитные лайки',
       'Расширенный поиск по интересам',
@@ -52,6 +56,7 @@ const pricingPlans: PricingPlan[] = [
     period: 'месяц',
     icon: 'Crown',
     gradient: 'from-orange-500 to-yellow-500',
+    planId: 'vip',
     features: [
       'Всё из Премиум +',
       'Персональный менеджер',
@@ -66,6 +71,43 @@ const pricingPlans: PricingPlan[] = [
 ];
 
 export const PricingSection = () => {
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [email, setEmail] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handlePayment = async (planId: string) => {
+    if (!email) {
+      alert('Пожалуйста, укажите email для чека');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const response = await fetch('https://functions.poehali.dev/4cdfd6e9-951e-41cf-8fee-dd431e4d128e', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          plan: planId,
+          email: email
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.payment_url) {
+        window.location.href = data.payment_url;
+      } else {
+        alert(data.error || 'Ошибка создания платежа');
+      }
+    } catch (error) {
+      alert('Ошибка соединения с сервером');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <div className="space-y-8 py-8">
       <div className="text-center space-y-4">
@@ -122,17 +164,56 @@ export const PricingSection = () => {
                 ))}
               </ul>
 
-              <Button 
-                className={`w-full h-12 text-lg font-semibold ${
-                  plan.popular 
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90' 
-                    : plan.price === 0
-                    ? 'bg-gray-600 hover:bg-gray-700'
-                    : 'bg-gradient-to-r from-orange-500 to-yellow-500 hover:opacity-90'
-                }`}
-              >
-                {plan.price === 0 ? 'Текущий тариф' : 'Выбрать тариф'}
-              </Button>
+              {plan.price === 0 ? (
+                <Button 
+                  className="w-full h-12 text-lg font-semibold bg-gray-600 hover:bg-gray-700"
+                  disabled
+                >
+                  Текущий тариф
+                </Button>
+              ) : selectedPlan === plan.planId ? (
+                <div className="space-y-3">
+                  <Input 
+                    type="email"
+                    placeholder="Ваш email для чека"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-12"
+                  />
+                  <div className="flex gap-2">
+                    <Button 
+                      className={`flex-1 h-12 text-lg font-semibold ${
+                        plan.popular 
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90' 
+                          : 'bg-gradient-to-r from-orange-500 to-yellow-500 hover:opacity-90'
+                      }`}
+                      onClick={() => handlePayment(plan.planId!)}
+                      disabled={isProcessing}
+                    >
+                      {isProcessing ? 'Обработка...' : 'Оплатить'}
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="h-12"
+                      onClick={() => setSelectedPlan(null)}
+                      disabled={isProcessing}
+                    >
+                      Отмена
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <Button 
+                  className={`w-full h-12 text-lg font-semibold ${
+                    plan.popular 
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90' 
+                      : 'bg-gradient-to-r from-orange-500 to-yellow-500 hover:opacity-90'
+                  }`}
+                  onClick={() => setSelectedPlan(plan.planId!)}
+                >
+                  Выбрать тариф
+                </Button>
+              )}
             </CardContent>
           </Card>
         ))}
