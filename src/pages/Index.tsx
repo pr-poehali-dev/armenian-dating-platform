@@ -123,10 +123,12 @@ const Index = () => {
               <Button variant="ghost" className="text-white hover:bg-white/20">
                 <Icon name="Bell" size={20} />
               </Button>
-              <Avatar>
-                <AvatarImage src="https://cdn.poehali.dev/projects/4a1800f8-5b7e-45bd-b17d-3e7d22e4acca/files/becc0a67-f42d-4c9d-87aa-7f3ccb4ddd96.jpg" />
-                <AvatarFallback>А</AvatarFallback>
-              </Avatar>
+              <a href="/login">
+                <Avatar className="cursor-pointer hover:ring-2 hover:ring-white/50 transition-all">
+                  <AvatarImage src="https://cdn.poehali.dev/projects/4a1800f8-5b7e-45bd-b17d-3e7d22e4acca/files/becc0a67-f42d-4c9d-87aa-7f3ccb4ddd96.jpg" />
+                  <AvatarFallback>А</AvatarFallback>
+                </Avatar>
+              </a>
             </div>
           </div>
         </div>
